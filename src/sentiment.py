@@ -10,7 +10,6 @@ def load_finbert():
     Installs FinBERT model and tokenizer from HuggingFace.
     Loops pipeline object.
     """
-    # ProsusAI/finbert is one of the best financial sentiment analysis models
     pipe = pipeline("sentiment-analysis", model="ProsusAI/finbert")
     return pipe
 
@@ -66,8 +65,6 @@ def generate_wordcloud(news_df):
         
     text = " ".join(news_df['title'].tolist())
     
-    # Gereksiz kelimeleri temizleyelim (Stopwords)
-    # Crypto özelinde önemsiz kelimeler eklenebilir
     stopwords = ["to", "in", "for", "on", "of", "and", "the", "a", "is", "with", "at", "as", "be"]
     
     wordcloud = WordCloud(width=800, height=400, 
@@ -75,9 +72,8 @@ def generate_wordcloud(news_df):
                           colormap='Greens',
                           stopwords=stopwords).generate(text)
     
-    # Matplotlib figürü oluştur
     fig, ax = plt.subplots(figsize=(10, 5))
     ax.imshow(wordcloud, interpolation='bilinear')
     ax.axis("off")
-    plt.close(fig) # Bellek sızıntısını önlemek için kapat
+    plt.close(fig)
     return fig

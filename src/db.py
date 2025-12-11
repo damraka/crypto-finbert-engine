@@ -9,7 +9,6 @@ def init_db():
     conn = sqlite3.connect(DB_NAME)
     c = conn.cursor()
     
-    # DÜZELTME: 'plot_score' sütununu buraya ekledik!
     c.execute('''
         CREATE TABLE IF NOT EXISTS news (
             link TEXT PRIMARY KEY,
@@ -31,14 +30,11 @@ def save_news(df):
     
     conn = sqlite3.connect(DB_NAME)
     
-    # 'plot_score' sütununun DataFrame'de olup olmadığını kontrol et
-    # Eğer yoksa (eski veri kaynaklı), hesapla
     if 'plot_score' not in df.columns:
          df['plot_score'] = df.apply(lambda x: x['sentiment_score'] if x['sentiment_label'] == 'positive' else -x['sentiment_score'] if x['sentiment_label'] == 'negative' else 0, axis=1)
 
     for _, row in df.iterrows():
         try:
-            # DÜZELTME: INSERT komutuna plot_score eklendi
             conn.execute('''
                 INSERT OR IGNORE INTO news (link, title, published, source, sentiment_label, sentiment_score, plot_score)
                 VALUES (?, ?, ?, ?, ?, ?, ?)

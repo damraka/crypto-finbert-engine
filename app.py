@@ -1,7 +1,7 @@
 import streamlit as st
 import plotly.graph_objects as go
 import plotly.express as px
-from src import config, data_loader, sentiment, db # db modülünü ekledik
+from src import config, data_loader, sentiment, db
 import pandas as pd
 import numpy as np
 import logging
@@ -19,7 +19,6 @@ st.markdown("""
 st.title("🧠 Crypto FinBERT: Persistent Sentiment Engine")
 
 # --- INITIALIZE DATABASE ---
-# Uygulama başlarken DB'yi kur (Yoksa oluşturur)
 db.init_db()
 
 # --- SIDEBAR ---
@@ -36,7 +35,6 @@ if st.sidebar.button("Analyze Text"):
     pass 
 
 st.sidebar.markdown("---")
-# "Analizi Başlat" butonu artık hem veri çekiyor hem de DB'den okuyor
 refresh = st.sidebar.button("🚀 Run Analysis & Update DB", use_container_width=True)
 
 # --- MODEL LOADING ---
@@ -47,7 +45,7 @@ def get_model():
 with st.spinner("Initializing AI Core..."):
     pipe = get_model()
 
-# Sandbox İşlemi
+# Sandbox Process
 if user_text:
     res = sentiment.predict_sentiment(pd.DataFrame([{'title': user_text}]), pipe)
     lbl = res.iloc[0]['sentiment_label']
@@ -58,44 +56,36 @@ if user_text:
 # --- HELPER FUNCTIONS ---
 def calculate_correlation(df_price, df_news):
     if df_news.empty or df_price.empty: return 0
-    # Veri tiplerini garantiye al
     df_news['merged_time'] = pd.to_datetime(df_news['published']).dt.floor('h')
     df_price['merged_time'] = pd.to_datetime(df_price['timestamp']).dt.floor('h')
-    
-    # Zaman dilimlerini (UTC) eşitlemek gerekebilir, basitlik için inner join yapıyoruz
     merged = pd.merge(df_price, df_news, on='merged_time', how='inner')
     
     if len(merged) > 2:
-        return merged['close'].corr(merged['plot_score']) # plot_score kullanıyoruz
+        return merged['close'].corr(merged['plot_score'])
     return 0
 
 # --- MAIN APP LOGIC ---
 
-# 1. VERİ YÖNETİMİ (DATA HANDLING)
+# 1. DATA HANDLING
 with st.spinner('Syncing with Database & Exchange...'):
-    # A. Piyasa verisini her zaman taze çek
     df_price = data_loader.fetch_market_data(symbol, timeframe, limit)
     if not df_price.empty:
         df_price['timestamp'] = pd.to_datetime(df_price['timestamp'], unit='ms', utc=True)
 
-    # B. Veritabanındaki Mevcut Haberleri Çek
     df_news = db.get_all_news()
 
-    # C. EĞER VERİTABANI BOŞSA veya BUTONA BASILDIYSA -> Yeni Veri Çek
     if df_news.empty or refresh:
         if df_news.empty:
             st.info("Veritabanı boş, ilk kurulum için veriler çekiliyor...")
-        
         new_news = data_loader.fetch_crypto_news()
         if not new_news.empty:
             analyzed_news = sentiment.predict_sentiment(new_news, pipe)
             db.save_news(analyzed_news) # Kaydet
             
-            # Veritabanını tekrar oku ki yeni gelenler ekrana yansısın
             df_news = db.get_all_news() 
             st.toast(f"Database updated with {len(new_news)} new articles!", icon="💾")
     
-    # Tarih formatını düzelt
+
     if not df_news.empty:
         df_news['published'] = pd.to_datetime(df_news['published'], utc=True)
 
@@ -105,7 +95,6 @@ with st.spinner('Syncing with Database & Exchange...'):
 col_m1, col_m2, col_m3, col_m4 = st.columns(4)
 current_price = df_price['close'].iloc[-1] if not df_price.empty else 0
 price_change = (df_price['close'].iloc[-1] - df_price['open'].iloc[0]) if not df_price.empty else 0
-# DİKKAT: Artık plot_score kullanıyoruz (Düzeltilmiş mantık)
 avg_sentiment = df_news['plot_score'].mean() if not df_news.empty else 0
 
 with col_m1: st.metric("Current Price", f"${current_price:,.2f}", f"{price_change:,.2f}")
