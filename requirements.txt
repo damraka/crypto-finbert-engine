@@ -1,0 +1,11 @@
+streamlit
+pandas
+numpy
+ccxt
+feedparser
+transformers
+torch
+plotly
+beautifulsoup4
+wordcloud
+matplotlib
