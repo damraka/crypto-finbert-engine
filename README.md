@@ -18,7 +18,7 @@ This project utilizes **FinBERT** (Financial NLP Model) to perform sentiment ana
 
 1.  **Clone the repository:**
     ```bash
-    git clone [https://github.com/YOUR_USERNAME/crypto-finbert-engine.git](https://github.com/YOUR_USERNAME/crypto-finbert-engine.git)
+    git clone [https://github.com/damraka/crypto-finbert-engine.git](https://github.com/damraka/crypto-finbert-engine.git)
     cd crypto-finbert-engine
     ```
 
@@ -38,3 +38,4 @@ The application includes Price Action Charts, Sentiment Distribution (Pie Chart)
 
 ---
 *Developed by Damra Kaan Aglamaz*
+
