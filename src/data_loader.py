@@ -30,11 +30,18 @@ def fetch_crypto_news():
     return pd.DataFrame(news_list)
 
 def fetch_market_data(symbol, timeframe, limit):
-    exchange = ccxt.binance()
+    """
+    Binance Cloud IP'lerini engellediği için Kraken kullanıyoruz.
+    """
     try:
-        ohlcv = exchange.fetch_ohlcv(symbol, timeframe, limit=limit)
+        exchange = ccxt.kraken()
+
+        clean_symbol = symbol.replace('USDT', 'USD')
+        
+        ohlcv = exchange.fetch_ohlcv(clean_symbol, timeframe, limit=limit)
         df = pd.DataFrame(ohlcv, columns=['timestamp', 'open', 'high', 'low', 'close', 'volume'])
         return df
     except Exception as e:
-        logging.error(f"Binance API Hatası: {e}")
+        logging.error(f"Borsa Verisi Hatası (Kraken): {e}")
+
         return pd.DataFrame()
