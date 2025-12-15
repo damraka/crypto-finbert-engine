@@ -5,7 +5,7 @@ RSS_FEEDS = [
     "https://www.coindesk.com/arc/outboundfeeds/rss/",
     "https://cointelegraph.com/rss",
     "https://decrypt.co/feed",             
-    "https://theblock.co/rss",             
+    # "https://theblock.co/rss", --- Currently causing issues, commented out            
     "https://bitcoinmagazine.com/feed"     
 ]
 
