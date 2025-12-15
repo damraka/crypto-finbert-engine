@@ -14,6 +14,10 @@ This project utilizes **FinBERT** (Financial NLP Model) to perform sentiment ana
 * **Technical & Fundamental:** Visualizes news markers directly on price charts alongside SMA (20/50) indicators.
 * **Interactive Dashboard:** A modern UI built with Streamlit and Plotly.
 
+## Streamlit App Link
+
+https://crypto-finbert-engine-mctlujtlgmfhepdmmdes5m.streamlit.app/
+
 ## Installation
 
 1.  **Clone the repository:**
@@ -38,5 +42,6 @@ The application includes Price Action Charts, Sentiment Distribution (Pie Chart)
 
 ---
 *Developed by Damra Kaan Aglamaz*
+
 
 
