@@ -9,7 +9,7 @@ This project utilizes **FinBERT** (Financial NLP Model) to perform sentiment ana
 ## Features
 
 * **AI-Powered Analysis:** Classifies news as *Positive, Negative, or Neutral* using the FinBERT model.
-* **Live Data Stream:** Real-time prices via Binance (CCXT) and breaking news via RSS feeds.
+* **Live Data Stream:** Real-time prices via Kraken and breaking news via RSS feeds.
 * **Data Persistence (SQLite):** Analyzed news is stored in a local database, ensuring no data loss on refresh.
 * **Technical & Fundamental:** Visualizes news markers directly on price charts alongside SMA (20/50) indicators.
 * **Interactive Dashboard:** A modern UI built with Streamlit and Plotly.
@@ -38,4 +38,5 @@ The application includes Price Action Charts, Sentiment Distribution (Pie Chart)
 
 ---
 *Developed by Damra Kaan Aglamaz*
+
 
