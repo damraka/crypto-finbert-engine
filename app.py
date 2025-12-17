@@ -76,7 +76,7 @@ with st.spinner('Syncing with Database & Exchange...'):
 
     if df_news.empty or refresh:
         if df_news.empty:
-            st.info("Veritabanı boş, ilk kurulum için veriler çekiliyor...")
+            st.info("Database is empty, pulling data for the first use...")
         new_news = data_loader.fetch_crypto_news()
         if not new_news.empty:
             analyzed_news = sentiment.predict_sentiment(new_news, pipe)
